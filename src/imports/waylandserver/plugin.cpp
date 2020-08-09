@@ -76,6 +76,8 @@ public:
                                                    QStringLiteral("Cannot create instance of LiriDecoration"));
 
         qmlRegisterType<WaylandLiriShellQuickExtension>(uri, versionMajor, versionMinor, "LiriShell");
+        qmlRegisterUncreatableType<WaylandLiriShortcut>(uri, versionMajor, versionMinor, "LiriShortcut",
+                                                        QStringLiteral("Cannot create instance of LiriShortcut"));
         qmlRegisterType<WaylandLiriOsdQuickExtension>(uri, versionMajor, versionMinor, "LiriOsd");
 
         qmlRegisterType<WaylandWlrExportDmabufManagerV1QuickExtension>(uri, versionMajor, versionMinor, "WlrExportDmabufManagerV1");

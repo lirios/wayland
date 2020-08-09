@@ -65,6 +65,17 @@
       <arg name="cursor" type="uint"/>
     </event>
 
+    <request name="bind_shortcut">
+      <description summary="register a shortcut with the compositor">
+        The client calls this request to register a shortcut
+        with the compositor.
+        This will create a liri_shortcut object that will emit
+        the activated event.
+      </description>
+      <arg name="id" type="new_id" interface="liri_shortcut"/>
+      <arg name="sequence" type="string"/>
+    </request>
+
     <request name="ready">
       <description summary="shell is ready">
         Tell the compositor that the shell has created all
@@ -79,6 +90,26 @@
         to let the client exit cleanly.
       </description>
     </event>
+  </interface>
+
+  <interface name="liri_shortcut" version="1">
+    <description summary="shortcut">
+      The activated event is emitted every time this shortcut is activated
+      by the compositor.
+    </description>
+
+    <event name="activated">
+      <description summary="tell the client the shortcut was triggered">
+        The shortcut was actiavated.
+      </description>
+      <arg name="seat" type="object" interface="wl_seat" allow-null="true"/>
+    </event>
+
+    <request name="destroy" type="destructor">
+      <description summary="destroy the shortcut">
+        This request destroys the shortcut.
+      </description>
+    </request>
   </interface>
 
   <interface name="liri_osd" version="1">

@@ -95,6 +95,22 @@ void WaylandLiriShellPrivate::liri_shell_set_grab_surface(Resource *resource, st
     }
 }
 
+void WaylandLiriShellPrivate::liri_shell_bind_shortcut(Resource *resource,
+                                                       uint32_t id,
+                                                       const QString &sequence)
+{
+    Q_Q(WaylandLiriShell);
+
+    auto *compositor = static_cast<QWaylandCompositor *>(q->extensionContainer());
+
+    auto *shortcut = new WaylandLiriShortcut(sequence, compositor, q);
+
+    auto ver = qMin(1, WaylandLiriShortcutPrivate::interfaceVersion());
+    WaylandLiriShortcutPrivate::get(shortcut)->init(resource->client(), id, ver);
+
+    Q_EMIT q->shortcutBound(shortcut);
+}
+
 void WaylandLiriShellPrivate::liri_shell_ready(QtWaylandServer::liri_shell::Resource *resource)
 {
     Q_UNUSED(resource)
@@ -171,6 +187,62 @@ const struct wl_interface *WaylandLiriShell::interface()
 QByteArray WaylandLiriShell::interfaceName()
 {
     return WaylandLiriShellPrivate::interfaceName();
+}
+
+/*
+ * WaylandLiriShortcutPrivate
+ */
+
+WaylandLiriShortcutPrivate::WaylandLiriShortcutPrivate(WaylandLiriShortcut *self)
+    : q_ptr(self)
+{
+}
+
+void WaylandLiriShortcutPrivate::liri_shortcut_destroy_resource(Resource *resource)
+{
+    Q_UNUSED(resource);
+    delete this;
+}
+
+void WaylandLiriShortcutPrivate::liri_shortcut_destroy(Resource *resource)
+{
+    wl_resource_destroy(resource->handle);
+}
+
+/*
+ * WaylandLiriShortcut
+ */
+
+WaylandLiriShortcut::WaylandLiriShortcut(const QString &sequence,
+                                         QWaylandCompositor *compositor,
+                                         QObject *parent)
+    : QObject(parent)
+    , d_ptr(new WaylandLiriShortcutPrivate(this))
+{
+    d_ptr->compositor = compositor;
+    d_ptr->sequence = sequence;
+}
+
+WaylandLiriShortcut::~WaylandLiriShortcut()
+{
+    delete d_ptr;
+}
+
+QString WaylandLiriShortcut::sequence() const
+{
+    Q_D(const WaylandLiriShortcut);
+    return d->sequence;
+}
+
+void WaylandLiriShortcut::activate(QWaylandSeat *seat)
+{
+    Q_D(WaylandLiriShortcut);
+
+    // TODO: We need a method to retrieve the resource, hopefull will be added to Qt 6.
+    // Right now, with Qt 5, we don't support multi-seat anyway
+    Q_UNUSED(seat);
+    //auto *actualSeat = seat ? seat : d->compositor->defaultSeat();
+    d->send_activated(nullptr);
 }
 
 /*

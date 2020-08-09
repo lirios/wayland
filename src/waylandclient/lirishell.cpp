@@ -142,6 +142,116 @@ const wl_interface *LiriShell::interface()
     return QtWayland::liri_shell::interface();
 }
 
+// LiriShortcutPrivate
+
+LiriShortcutPrivate::LiriShortcutPrivate(LiriShortcut *self)
+    : QtWayland::liri_shortcut()
+    , q_ptr(self)
+{
+}
+
+LiriShortcutPrivate::~LiriShortcutPrivate()
+{
+    destroy();
+}
+
+void LiriShortcutPrivate::liri_shortcut_activated(struct ::wl_seat *seat)
+{
+    Q_Q(LiriShortcut);
+    Q_EMIT q->activated(seat);
+}
+
+// LiriShortcut
+
+LiriShortcut::LiriShortcut()
+    : QWaylandClientExtension(1)
+    , d_ptr(new LiriShortcutPrivate(this))
+{
+}
+
+LiriShortcut::~LiriShortcut()
+{
+    delete d_ptr;
+}
+
+LiriShell *LiriShortcut::shell() const
+{
+    Q_D(const LiriShortcut);
+    return d->shell;
+}
+
+void LiriShortcut::setShell(LiriShell *shell)
+{
+    Q_D(LiriShortcut);
+
+    if (d->shell == shell)
+        return;
+
+    if (d->isInitialized()) {
+        qCWarning(lcShell, "Cannot set LiriShortcut::shell after the shortcut is bound");
+        return;
+    }
+
+    d->shell = shell;
+    Q_EMIT shellChanged();
+}
+
+QString LiriShortcut::sequence() const
+{
+    Q_D(const LiriShortcut);
+    return d->sequence;
+}
+
+void LiriShortcut::setSequence(const QString &sequence)
+{
+    Q_D(LiriShortcut);
+
+    if (d->sequence == sequence)
+        return;
+
+    if (d->isInitialized()) {
+        qCWarning(lcShell, "Cannot set LiriShortcut::sequence after the shortcut is bound");
+        return;
+    }
+
+    d->sequence = sequence;
+    Q_EMIT sequenceChanged();
+}
+
+void LiriShortcut::bind(struct ::wl_registry *registry, int id, int ver)
+{
+    Q_UNUSED(registry);
+    Q_UNUSED(id);
+    Q_UNUSED(ver);
+}
+
+const wl_interface *LiriShortcut::interface()
+{
+    return LiriShortcutPrivate::interface();
+}
+
+void LiriShortcut::bindShortcut()
+{
+    Q_D(LiriShortcut);
+
+    if (d->isInitialized()) {
+        qCWarning(lcShell, "Cannot bind LiriShortcut twice");
+        return;
+    }
+
+    if (!d->shell) {
+        qCWarning(lcShell, "Cannot bind shortcut since LiriShortcut::shell is not set");
+        return;
+    }
+
+    if (d->sequence.isEmpty()) {
+        qCWarning(lcShell, "Cannot bind shortcut since LiriShortcut::sequence is not set");
+        return;
+    }
+
+    d->init(LiriShellPrivate::get(d->shell)->bind_shortcut(d->sequence));
+}
+
 // LiriOsdPrivate
 
 LiriOsdPrivate::LiriOsdPrivate(LiriOsd *self)

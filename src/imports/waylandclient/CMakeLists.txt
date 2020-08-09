@@ -7,6 +7,8 @@ liri_add_qml_plugin(waylandclient
         "1.0"
     SOURCES
         plugin.cpp
+        lirishortcutqml.cpp
+        lirishortcutqml.h
         wlrlayersurfacev1qml.cpp
         wlrlayersurfacev1qml.h
         xdgshellqml.cpp

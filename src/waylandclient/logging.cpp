@@ -26,4 +26,5 @@
 Q_LOGGING_CATEGORY(lcWaylandClient, "liri.waylandclient", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcColorPickerClient, "liri.waylandclient.colorpicker", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcScreencopy, "liri.waylandclient.screencopy", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcShell, "liri.waylandclient.shell", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcXdgShell, "liri.waylandclient.xdgshell", QtInfoMsg)

@@ -34,6 +34,7 @@
 QT_FORWARD_DECLARE_CLASS(QWindow)
 
 class LiriShellPrivate;
+class LiriShortcutPrivate;
 class LiriOsdPrivate;
 
 class LIRIWAYLANDCLIENT_EXPORT LiriShell : public QWaylandClientExtensionTemplate<LiriShell>
@@ -73,6 +74,39 @@ Q_SIGNALS:
 
 private:
     LiriShellPrivate *const d_ptr;
+};
+
+class LIRIWAYLANDCLIENT_EXPORT LiriShortcut : public QWaylandClientExtension
+{
+    Q_OBJECT
+    Q_DECLARE_PRIVATE(LiriShortcut)
+    Q_PROPERTY(LiriShell *shell READ shell WRITE setShell NOTIFY shellChanged)
+    Q_PROPERTY(QString sequence READ sequence WRITE setSequence NOTIFY sequenceChanged)
+public:
+    LiriShortcut();
+    ~LiriShortcut();
+
+    LiriShell *shell() const;
+    void setShell(LiriShell *shell);
+
+    QString sequence() const;
+    void setSequence(const QString &sequence);
+
+    const struct wl_interface *extensionInterface() const override { return interface(); }
+    void bind(struct ::wl_registry *registry, int id, int ver) override;
+
+    static const struct ::wl_interface *interface();
+
+Q_SIGNALS:
+    void shellChanged();
+    void sequenceChanged();
+    void activated(struct ::wl_seat *seat);
+
+public Q_SLOTS:
+    void bindShortcut();
+
+private:
+    LiriShortcutPrivate *const d_ptr;
 };
 
 class LIRIWAYLANDCLIENT_EXPORT LiriOsd : public QWaylandClientExtensionTemplate<LiriOsd>

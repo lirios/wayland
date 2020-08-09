@@ -58,6 +58,22 @@ private:
     void liri_shell_quit() override;
 };
 
+class LiriShortcutPrivate : public QtWayland::liri_shortcut
+{
+    Q_DECLARE_PUBLIC(LiriShortcut)
+public:
+    LiriShortcutPrivate(LiriShortcut *self);
+    ~LiriShortcutPrivate();
+
+    LiriShell *shell = nullptr;
+    QString sequence;
+
+protected:
+    LiriShortcut *q_ptr;
+
+    void liri_shortcut_activated(struct ::wl_seat *seat);
+};
+
 class LiriOsdPrivate : public QtWayland::liri_osd
 {
     Q_DECLARE_PUBLIC(LiriOsd)

@@ -31,6 +31,7 @@
 #include <LiriWaylandClient/WlrOutputManagementV1>
 #include <LiriWaylandClient/WlrScreencopyV1>
 
+#include "lirishortcutqml.h"
 #include "wlrlayersurfacev1qml.h"
 #include "xdgshellqml.h"
 #include "utils.h"
@@ -56,6 +57,7 @@ public:
 
         qmlRegisterType<LiriColorPickerManager>(uri, versionMajor, versionMinor, "LiriColorPickerManager");
         qmlRegisterType<LiriShell>(uri, versionMajor, versionMinor, "LiriShell");
+        qmlRegisterType<LiriShortcutQml>(uri, versionMajor, versionMinor, "LiriShortcut");
         qmlRegisterType<LiriOsd>(uri, versionMajor, versionMinor, "LiriOsd");
 
         qmlRegisterType<WlrExportDmabufManagerV1>(uri, versionMajor, versionMinor, "WlrExportDmabufManagerV1");

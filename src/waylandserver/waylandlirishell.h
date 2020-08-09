@@ -28,10 +28,31 @@
 
 #include <LiriWaylandServer/liriwaylandserverglobal.h>
 
+QT_FORWARD_DECLARE_CLASS(QWaylandSeat)
 QT_FORWARD_DECLARE_CLASS(QWaylandSurface)
 
 class WaylandLiriShellPrivate;
+class WaylandLiriShortcutPrivate;
 class WaylandLiriOsdPrivate;
+
+class LIRIWAYLANDSERVER_EXPORT WaylandLiriShortcut : public QObject
+{
+    Q_OBJECT
+    Q_DECLARE_PRIVATE(WaylandLiriShortcut)
+    Q_PROPERTY(QString sequence READ sequence CONSTANT)
+public:
+    explicit WaylandLiriShortcut(const QString &sequence,
+                                 QWaylandCompositor *compositor,
+                                 QObject *parent = nullptr);
+    ~WaylandLiriShortcut();
+
+    QString sequence() const;
+
+    Q_INVOKABLE void activate(QWaylandSeat *seat = nullptr);
+
+private:
+    WaylandLiriShortcutPrivate *const d_ptr;
+};
 
 class LIRIWAYLANDSERVER_EXPORT WaylandLiriShell : public QWaylandCompositorExtensionTemplate<WaylandLiriShell>
 {
@@ -61,13 +82,13 @@ public:
     void initialize() override;
 
     Q_INVOKABLE void grabCursor(WaylandLiriShell::GrabCursor cursor);
-
     Q_INVOKABLE void sendQuit();
 
     static const struct wl_interface *interface();
     static QByteArray interfaceName();
 
 Q_SIGNALS:
+    void shortcutBound(WaylandLiriShortcut *shortcut);
     void grabSurfaceAdded(QWaylandSurface *surface);
     void ready();
 

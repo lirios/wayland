@@ -28,6 +28,7 @@
 #include <LiriWaylandServer/private/qwayland-server-liri-shell.h>
 
 class WaylandLiriShell;
+class WaylandLiriShortcut;
 
 class LIRIWAYLANDSERVER_EXPORT WaylandLiriShellPrivate : public QtWaylandServer::liri_shell
 {
@@ -45,7 +46,27 @@ protected:
 private:
     void liri_shell_bind_resource(Resource *r) override;
     void liri_shell_set_grab_surface(Resource *resource, struct ::wl_resource *wlSurface) override;
+    void liri_shell_bind_shortcut(Resource *resource, uint32_t id, const QString &sequence) override;
     void liri_shell_ready(Resource *resource) override;
+};
+
+class LIRIWAYLANDSERVER_EXPORT WaylandLiriShortcutPrivate
+        : public QtWaylandServer::liri_shortcut
+{
+    Q_DECLARE_PUBLIC(WaylandLiriShortcut)
+public:
+    explicit WaylandLiriShortcutPrivate(WaylandLiriShortcut *self);
+
+    static WaylandLiriShortcutPrivate *get(WaylandLiriShortcut *self) { return self->d_func(); }
+
+    QWaylandCompositor *compositor = nullptr;
+    QString sequence;
+
+protected:
+    WaylandLiriShortcut *q_ptr;
+
+    void liri_shortcut_destroy_resource(Resource *resource) override;
+    void liri_shortcut_destroy(Resource *resource) override;
 };
 
 class LIRIWAYLANDSERVER_EXPORT WaylandLiriOsdPrivate : public QtWaylandServer::liri_osd
