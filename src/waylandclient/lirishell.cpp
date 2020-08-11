@@ -93,6 +93,12 @@ void LiriShellPrivate::liri_shell_grab_cursor(uint32_t cursor)
         setCursorShape(grabWindow, grabCursor);
 }
 
+void LiriShellPrivate::liri_shell_shutdown_requested()
+{
+    Q_Q(LiriShell);
+    Q_EMIT q->shutdownRequested();
+}
+
 void LiriShellPrivate::liri_shell_quit()
 {
     Q_Q(LiriShell);
@@ -135,6 +141,12 @@ void LiriShell::sendReady()
 {
     Q_D(LiriShell);
     d->ready();
+}
+
+void LiriShell::terminateCompositor()
+{
+    Q_D(LiriShell);
+    d->terminate();
 }
 
 const wl_interface *LiriShell::interface()

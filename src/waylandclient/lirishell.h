@@ -66,10 +66,13 @@ public:
     Q_INVOKABLE void registerGrabSurface(QWindow *window);
     Q_INVOKABLE void sendReady();
 
+    Q_INVOKABLE void terminateCompositor();
+
     static const struct ::wl_interface *interface();
 
 Q_SIGNALS:
     void cursorChangeRequested(LiriShell::GrabCursor cursor);
+    void shutdownRequested();
     void quitRequested();
 
 private:

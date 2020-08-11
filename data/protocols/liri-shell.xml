@@ -84,6 +84,21 @@
       </description>
     </request>
 
+    <request name="terminate">
+      <description summary="terminate the compositor">
+        Ask the compositor to quit.
+        This is usually called from the logout dialog.
+      </description>
+    </request>
+
+    <event name="shutdown_requested">
+      <description summary="shutdown is requested">
+        When the power off or suspend button is pressed, the compositor
+        will throw this event and the client will show the shutdown
+        dialog.
+      </description>
+    </event>
+
     <event name="quit">
       <description summary="tell the client to quit">
         During the shutdown, the compositor emits this event in order

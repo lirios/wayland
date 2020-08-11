@@ -55,6 +55,7 @@ protected:
 
 private:
     void liri_shell_grab_cursor(uint32_t cursor) override;
+    void liri_shell_shutdown_requested() override;
     void liri_shell_quit() override;
 };
 

@@ -82,6 +82,7 @@ public:
     void initialize() override;
 
     Q_INVOKABLE void grabCursor(WaylandLiriShell::GrabCursor cursor);
+    Q_INVOKABLE void requestShutdown();
     Q_INVOKABLE void sendQuit();
 
     static const struct wl_interface *interface();
@@ -91,6 +92,7 @@ Q_SIGNALS:
     void shortcutBound(WaylandLiriShortcut *shortcut);
     void grabSurfaceAdded(QWaylandSurface *surface);
     void ready();
+    void terminateRequested();
 
 private:
     WaylandLiriShellPrivate *const d_ptr;

@@ -119,6 +119,14 @@ void WaylandLiriShellPrivate::liri_shell_ready(QtWaylandServer::liri_shell::Reso
     emit q->ready();
 }
 
+void WaylandLiriShellPrivate::liri_shell_terminate(Resource *resource)
+{
+    Q_UNUSED(resource);
+
+    Q_Q(WaylandLiriShell);
+    Q_EMIT q->terminateRequested();
+}
+
 /*
  * WaylandLiriShell
  */
@@ -168,6 +176,15 @@ void WaylandLiriShell::grabCursor(GrabCursor cursor)
             seat->sendMouseMoveEvent(view, QPointF(0, 0), QPointF(0, 0));
         }
     }
+}
+
+void WaylandLiriShell::requestShutdown()
+{
+    Q_D(WaylandLiriShell);
+
+    const auto values = d->resourceMap().values();
+    for (auto *resource : values)
+        d->send_shutdown_requested(resource->handle);
 }
 
 void WaylandLiriShell::sendQuit()
