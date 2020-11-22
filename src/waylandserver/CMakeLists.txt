@@ -53,6 +53,9 @@ liri_add_module(WaylandServer
         waylandliricolorpicker.cpp
         waylandliricolorpicker.h
         waylandliricolorpicker_p.h
+        waylandlirimodal.cpp
+        waylandlirimodal.h
+        waylandlirimodal_p.h
         waylandlirishell.cpp
         waylandlirishell.h
         waylandlirishell_p.h
@@ -79,6 +82,7 @@ liri_add_module(WaylandServer
         KdeServerDecoration
         WaylandLiriColorPicker
         LiriDecoration
+        WaylandLiriModal
         WaylandLiriShell
         WaylandWlrExportDmabufV1
         WaylandWlrForeignToplevelManagementV1
@@ -88,6 +92,7 @@ liri_add_module(WaylandServer
     PRIVATE_HEADERS
         gtkshell_p.h
         waylandliricolorpicker_p.h
+        waylandlirimodal_p.h
         waylandlirishell_p.h
         waylandwlrexportdmabufv1_p.h
         waylandwlrforeigntoplevelmanagementv1_p.h

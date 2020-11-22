@@ -150,4 +150,55 @@
       <arg name="value" type="uint"/>
     </event>
   </interface>
+
+  <interface name="liri_modal_manager" version="1">
+    <description summary="modal interaction">
+      Modal dialogs, in the context of the shell, appear in front of any
+      application window or any other shell surface, and remain on screen
+      until confirmed or dismissed.
+
+      As soon as the shell client creates a modal dialog, it gets a liri_modal
+      object by calling liri_modal_manager.create. The compositor then
+      shows the modal overlay on top of every other surface.
+
+      When the user clicks or taps on the modal overlay, the compositor sends
+      out the liri_modal.done event and the client dismisses the modal dialog.
+
+      The modal overlay and the dialog itself are created using the
+      wlr_layer_shell_unstable_v1 protocol.
+
+      This interface can only be bound once, by an authorized client.
+    </description>
+
+    <request name="grab">
+      <description summary="initiate modal interaction">
+        Tell the compositor to show the modal overlay and
+        act as an implicit grab.
+      </description>
+
+      <arg name="id" type="new_id" interface="liri_modal"/>
+      <arg name="seat" type="object" interface="wl_seat"
+           summary="the seat of the user event"/>
+    </request>
+  </interface>
+
+  <interface name="liri_modal" version="1">
+    <description summary="implicit modal grab">
+      When the user clicks or taps on the modal overlay, the compositor sends
+      out the liri_modal.done event and the client dismisses the modal dialog.
+    </description>
+
+    <request name="destroy" type="destructor">
+      <description summary="destroy the object">
+        This request destroys the liri_modal object.
+      </description>
+    </request>
+
+    <event name="done">
+      <description summary="modal interaction is done">
+        This event is sent out when a modal is dismissed by the compositor.
+        The client should destroy the liri_modal object at this point.
+      </description>
+    </event>
+  </interface>
 </protocol>

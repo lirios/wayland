@@ -43,6 +43,9 @@ liri_add_module(WaylandClient
         liricolorpicker.cpp
         liricolorpicker.h
         liricolorpicker_p.h
+        lirimodal.cpp
+        lirimodal.h
+        lirimodal_p.h
         lirishell.cpp
         lirishell.h
         lirishell_p.h
@@ -70,6 +73,7 @@ liri_add_module(WaylandClient
         ${SOURCES}
     FORWARDING_HEADERS
         LiriColorPicker
+        LiriModal
         LiriShell
         WlrExportDmabufV1
         WlrForeignToplevelManagementV1
@@ -79,6 +83,7 @@ liri_add_module(WaylandClient
         XdgShell
     PRIVATE_HEADERS
         liricolorpicker_p.h
+        lirimodal_p.h
         lirishell_p.h
         wlrexportdmabufv1_p.h
         wlrforeigntoplevelmanagementv1_p.h
