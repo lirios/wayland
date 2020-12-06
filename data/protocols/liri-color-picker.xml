@@ -30,6 +30,8 @@
       This interface allows a client to read the ARGB value of a pixel,
       effectively pickup up the color at a specific coordinate
       of an output.
+
+      This interface can only be bound once by an authorized client.
     </description>
 
     <enum name="error">
