@@ -23,6 +23,40 @@ WaylandLiriColorPicker::WaylandLiriColorPicker(QObject *parent)
 {
 }
 
+void WaylandLiriColorPicker::liri_color_picker_bind_resource(Resource *r)
+{
+    // Make sure only an authorized client can bind
+    pid_t pid;
+    wl_client_get_credentials(r->client(), &pid, nullptr, nullptr);
+    QFile file(QString::asprintf("/proc/%d/cmdline", pid));
+    if (file.open(QFile::ReadOnly)) {
+        QTextStream stream(&file);
+        QString data = stream.readAll();
+        QStringList args = data.split(QLatin1Char('\0'));
+        file.close();
+
+        // XXX: We gotta find a better way to do it
+        bool allowed =
+                args.first().endsWith(QStringLiteral("/xdg-desktop-portal-liri")) ||
+                args.first().endsWith(QStringLiteral("/tst_waylandserver"));
+        if (!allowed) {
+            wl_resource_post_error(r->handle, WL_DISPLAY_ERROR_IMPLEMENTATION,
+                                   "unauthorized client program");
+            return;
+        }
+    } else {
+        wl_resource_post_error(r->handle, WL_DISPLAY_ERROR_IMPLEMENTATION,
+                               "unauthorized client program");
+        return;
+    }
+
+    // Client can bind only once
+    if (resource())
+        wl_resource_post_error(r->handle,
+                               WL_DISPLAY_ERROR_INVALID_OBJECT,
+                               "client can bind only once");
+}
+
 void WaylandLiriColorPicker::liri_color_picker_destroy_resource(Resource *resource)
 {
     Q_UNUSED(resource)

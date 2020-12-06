@@ -38,6 +38,7 @@ public:
     QPointer<WaylandLiriColorPickerEventFilter> filter;
 
 protected:
+    void liri_color_picker_bind_resource(Resource *resource) override;
     void liri_color_picker_destroy_resource(Resource *resource) override;
     void liri_color_picker_destroy(Resource *resource) override;
 };
