@@ -10,6 +10,9 @@ ecm_add_qtwayland_client_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/liri-shell.xml"
     BASENAME "liri-shell")
 ecm_add_qtwayland_client_protocol(SOURCES
+    PROTOCOL "${WaylandProtocols_DATADIR}/stable/viewporter/viewporter.xml"
+    BASENAME "viewporter")
+ecm_add_qtwayland_client_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/wlr-export-dmabuf-unstable-v1.xml"
     BASENAME "wlr-export-dmabuf-unstable-v1")
 ecm_add_qtwayland_client_protocol(SOURCES
@@ -28,6 +31,7 @@ ecm_add_qtwayland_client_protocol(SOURCES
 set(_generated_files
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-color-picker-client-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-shell-client-protocol.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/wayland-viewporter-client-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-export-dmabuf-unstable-v1-client-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-layer-shell-unstable-v1-client-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-output-management-unstable-v1-client-protocol.h"
@@ -49,6 +53,9 @@ liri_add_module(WaylandClient
         logging.cpp
         logging_p.h
         utils_p.h
+        viewporter.cpp
+        viewporter.h
+        viewporter_p.h
         wlrexportdmabufv1.cpp
         wlrexportdmabufv1.h
         wlrexportdmabufv1_p.h
@@ -71,6 +78,7 @@ liri_add_module(WaylandClient
     FORWARDING_HEADERS
         LiriColorPicker
         LiriShell
+        Viewporter
         WlrExportDmabufV1
         WlrForeignToplevelManagementV1
         WlrLayerShellV1
@@ -80,6 +88,7 @@ liri_add_module(WaylandClient
     PRIVATE_HEADERS
         liricolorpicker_p.h
         lirishell_p.h
+        viewporter_p.h
         wlrexportdmabufv1_p.h
         wlrforeigntoplevelmanagementv1_p.h
         wlrlayershellv1_p.h
@@ -89,6 +98,7 @@ liri_add_module(WaylandClient
         "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-color-picker-client-protocol.h"
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-liri-color-picker.h"
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-liri-shell.h"
+        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-viewporter.h"
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-wlr-export-dmabuf-unstable-v1.h"
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-wlr-foreign-toplevel-management-unstable-v1.h"
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-wlr-layer-shell-unstable-v1.h"

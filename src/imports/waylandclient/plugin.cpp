@@ -32,6 +32,7 @@
 #include <LiriWaylandClient/WlrScreencopyV1>
 
 #include "lirishortcutqml.h"
+#include "viewportqml.h"
 #include "wlrlayersurfacev1qml.h"
 #include "xdgshellqml.h"
 #include "utils.h"
@@ -59,6 +60,8 @@ public:
         qmlRegisterType<LiriShell>(uri, versionMajor, versionMinor, "LiriShell");
         qmlRegisterType<LiriShortcutQml>(uri, versionMajor, versionMinor, "LiriShortcut");
         qmlRegisterType<LiriOsd>(uri, versionMajor, versionMinor, "LiriOsd");
+
+        qmlRegisterType<ViewportQml>(uri, versionMajor, versionMinor, "Viewport");
 
         qmlRegisterType<WlrExportDmabufManagerV1>(uri, versionMajor, versionMinor, "WlrExportDmabufManagerV1");
         qmlRegisterUncreatableType<WlrExportDmabufFrameV1>(uri, versionMajor, versionMinor, "WlrExportDmabufFrameV1",
